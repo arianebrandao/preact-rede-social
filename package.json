@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "phosphor-react": "^1.4.1",
     "preact": "^10.9.0"
   },
   "devDependencies": {
