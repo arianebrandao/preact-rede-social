@@ -1,3 +1,5 @@
+import styles from './post.module.css';
+
 interface PostProps {
     author: string;
     content: string;
@@ -5,9 +7,22 @@ interface PostProps {
 
 export function Post(props: PostProps) {
     return (
-        <div>
-            <h3>{props.author}</h3>
-            <p>{props.content}</p>
-        </div>
+        <article className={styles.post}>
+            <header>
+                <div className={styles.author}>
+                    <img src="https://github.com/arianebrandao.png" alt="Author profile pic" />
+                    <div className={styles.authorInfo}>
+                        <strong>Ariane Brandão</strong>
+                        <span>Web Developer</span>
+                    </div>
+                </div>
+
+                <time title="05 de setembro às 18:02h" dateTime='2022-09-05 18:02:00'>Publicado há 1h</time>
+            </header>
+
+            <div className={styles.content}>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam minima possimus, architecto eveniet accusantium non nihil impedit, harum ad fugit velit asperiores voluptatum! Unde illum maiores ab? Distinctio, ad illum.</p>
+            </div>
+        </article>
     )
 }
