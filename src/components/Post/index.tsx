@@ -23,6 +23,16 @@ export function Post(props: PostProps) {
             <div className={styles.content}>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam minima possimus, architecto eveniet accusantium non nihil impedit, harum ad fugit velit asperiores voluptatum! Unde illum maiores ab? Distinctio, ad illum.</p>
             </div>
+
+            <form className={styles.commentForm}>
+                <strong>Deixe seu feedback</strong>
+
+                <textarea placeholder='Deixe um comentário' />
+
+                <footer>
+                    <button type="submit">Publicar</button>
+                </footer>
+            </form>
         </article>
     )
 }
