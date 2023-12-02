@@ -1,7 +1,7 @@
 .sidebar {
     background-color: var(--gray-800);
     border-radius: 8px;
-    overflow: hidder;
+    overflow: hidden;
 }
 
 .cover {
