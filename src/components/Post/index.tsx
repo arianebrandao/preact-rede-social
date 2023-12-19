@@ -1,29 +1,60 @@
+import { format, formatDistanceToNow } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
 import { Avatar } from '../Avatar';
 import { Comment } from '../Comment';
 import styles from './post.module.css';
 
 interface PostProps {
-    author: string;
-    content: string;
+    author: {
+        avatarUrl: string;
+        name: string;
+        role: string;
+    };
+    content: {
+        id: number;
+        type: string;
+        content: string;
+    }[];
+    publishedAt: Date;
 }
 
 export function Post(props: PostProps) {
+    const publishedDateFormatted = format(props.publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+        locale: ptBR,
+    });
+
+    const publishedDateRelativeToNow = formatDistanceToNow(props.publishedAt, {
+        locale: ptBR,
+        addSuffix: true,
+    })
+
     return (
         <article className={styles.post}>
             <header>
                 <div className={styles.author}>
-                    <Avatar src="https://github.com/arianebrandao.png" alt="Author profile pic" />
+                    <Avatar src={props.author.avatarUrl} alt={props.author.name} />
                     <div className={styles.authorInfo}>
-                        <strong>Ariane Brandão</strong>
-                        <span>Web Developer</span>
+                        <strong>{props.author.name}</strong>
+                        <span>{props.author.role}</span>
                     </div>
                 </div>
 
-                <time title="05 de setembro às 18:02h" dateTime='2022-09-05 18:02:00'>Publicado há 1h</time>
+                <time title={publishedDateFormatted} dateTime={props.publishedAt.toISOString()}>Publicado {publishedDateRelativeToNow}</time>
             </header>
 
             <div className={styles.content}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam minima possimus, architecto eveniet accusantium non nihil impedit, harum ad fugit velit asperiores voluptatum! Unde illum maiores ab? Distinctio, ad illum.</p>
+                {props.content.map(line => {
+                    if (line.type == 'paragraph') {
+                        return <p key={line.id}>{line.content}</p>
+                    } else if (line.type == 'link') {
+                        return (
+                            <p key={line.id}>
+                                <a href={`https://${line.content}`} target='_blank'>{line.content}</a>
+                            </p>
+                        );
+                    }
+                })}
             </div>
 
             <form className={styles.commentForm}>
