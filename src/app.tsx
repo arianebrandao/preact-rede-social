@@ -34,20 +34,6 @@ const posts = [
     ],
     publishedAt: new Date('2023-12-13 10:00:00'),
   },
-  {
-    id: 3,
-    author: {
-      avatarUrl: 'https://github.com/arianebrandao.png',
-      name: 'Ariane Brandão',
-      role: 'Web developer'
-    },
-    content: [
-      { id: 1, type: 'paragraph', content: 'Fala galera!!!' },
-      { id: 2, type: 'paragraph', content: 'Quidem aliquid reiciendis animi, quis at modi inventore facilis repudiandae distinctio amet exercitationem dolores assumenda! Harum tempore veniam natus? Voluptatum, praesentium nobis.' },
-      { id: 3, type: 'link', content: 'github.com/arianebrandao' }
-    ],
-    publishedAt: new Date('2023-12-14 17:30:00'),
-  },
 ];
 
 export function App() {

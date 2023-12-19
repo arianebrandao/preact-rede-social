@@ -3,7 +3,11 @@ import { Avatar } from "../Avatar";
 
 import styles from "./comment.module.css";
 
-export function Comment () {
+interface CommentProps {
+    content: string;
+}
+
+export function Comment (props: CommentProps) {
     return (
         <div className={styles.comment}>
             <Avatar hasBorder={false} src="https://github.com/arianebrandao.png" alt="" />
@@ -21,7 +25,7 @@ export function Comment () {
                         </button>
                     </div>
 
-                    <p>Muito bom, parabéns!!</p>
+                    <p>{props.content}</p>
                 </div>
 
                 <div className={styles.commentFooter}>

@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { useState } from 'react';
 
 import { Avatar } from '../Avatar';
 import { Comment } from '../Comment';
@@ -20,6 +21,21 @@ interface PostProps {
 }
 
 export function Post(props: PostProps) {
+    // estado: variáveis que eu quero que o componente monitore
+    const [comments, setComments] = useState(['Muito bom, parabéns!!']);
+    const [newCommentText, setNewCommentText] = useState('');
+
+    function handleCreateNewComment(event: HTMLFormElement) {
+        event.preventDefault();
+  
+        setComments([...comments, newCommentText]);
+        setNewCommentText('');
+    }
+
+    function handleNewCommentChange(event: HTMLFormElement) {
+        setNewCommentText(event?.target.value);
+    }
+
     const publishedDateFormatted = format(props.publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
         locale: ptBR,
     });
@@ -27,7 +43,7 @@ export function Post(props: PostProps) {
     const publishedDateRelativeToNow = formatDistanceToNow(props.publishedAt, {
         locale: ptBR,
         addSuffix: true,
-    })
+    });
 
     return (
         <article className={styles.post}>
@@ -57,10 +73,16 @@ export function Post(props: PostProps) {
                 })}
             </div>
 
-            <form className={styles.commentForm}>
+            <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
                 <strong>Deixe seu feedback</strong>
 
-                <textarea placeholder='Deixe um comentário' />
+                <textarea 
+                    name="comment" 
+                    placeholder='Deixe um comentário'
+                    value={newCommentText}
+                    onChange={handleNewCommentChange}
+                    required
+                />
 
                 <footer>
                     <button type="submit">Publicar</button>
@@ -68,9 +90,9 @@ export function Post(props: PostProps) {
             </form>
 
             <div className={styles.commentList}>
-                <Comment />
-                <Comment />
-                <Comment />
+                {comments.map( comment => {
+                    return <Comment content={comment} />
+                })}
             </div>
         </article>
     )
