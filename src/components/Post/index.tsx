@@ -33,7 +33,21 @@ export function Post(props: PostProps) {
     }
 
     function handleNewCommentChange(event: HTMLFormElement) {
+        event?.target.setCustomValidity('');
         setNewCommentText(event?.target.value);
+    }
+
+    function handleNewCommentInvalid(event: HTMLFormElement) {
+        event?.target.setCustomValidity('Esse campo é obrigatório.');
+    }
+
+    function deleteComment(commentToDelete: string) {
+        // imutabilidade -> as variáveis não sofrem mutação, nós criamos um novo valor (um novo espaço na memória)
+        const commentsWithoutDeletedOne = comments.filter(comment => {
+            return comment !== commentToDelete;
+        })
+
+        setComments(commentsWithoutDeletedOne);
     }
 
     const publishedDateFormatted = format(props.publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
@@ -44,6 +58,8 @@ export function Post(props: PostProps) {
         locale: ptBR,
         addSuffix: true,
     });
+
+    const isNewCommentEmpty = newCommentText.length === 0;
 
     return (
         <article className={styles.post}>
@@ -81,17 +97,18 @@ export function Post(props: PostProps) {
                     placeholder='Deixe um comentário'
                     value={newCommentText}
                     onChange={handleNewCommentChange}
+                    onInvalid={handleNewCommentInvalid}
                     required
                 />
 
                 <footer>
-                    <button type="submit">Publicar</button>
+                    <button type="submit" disabled={isNewCommentEmpty}>Publicar</button>
                 </footer>
             </form>
 
             <div className={styles.commentList}>
                 {comments.map( comment => {
-                    return <Comment content={comment} />
+                    return <Comment key={comment} content={comment} onDeleteComment={deleteComment} />
                 })}
             </div>
         </article>
