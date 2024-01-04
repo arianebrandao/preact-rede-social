@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="Ignite Feed" title="Ignite Feed" src=".github/logo.svg" />
+  <img alt="Ignite Feed" title="Ignite Feed" src=".github/logo.png" />
 </h1>
 
 <br>
