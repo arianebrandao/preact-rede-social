@@ -1,9 +1,3 @@
-<h1 align="center">
-  <img alt="Ignite Feed" title="Ignite Feed" src=".github/logo.png" />
-</h1>
-
-<br>
-
 <p align="center">
   <img alt="Ignite Feed" src=".github/app.jpg" width="100%">
 </p>
