@@ -1,43 +1,52 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 
 import { Avatar } from '../Avatar';
 import { Comment } from '../Comment';
 import styles from './post.module.css';
 
-interface PostProps {
-    author: {
-        avatarUrl: string;
-        name: string;
-        role: string;
-    };
-    content: {
-        id: number;
-        type: string;
-        content: string;
-    }[];
-    publishedAt: Date;
+type Author = {
+    avatarUrl: string;
+    name: string;
+    role: string;
 }
 
-export function Post(props: PostProps) {
+type Content = {
+    id: number;
+    type: 'paragraph' | 'link';
+    content: string;
+}
+
+export interface PostType {
+    id: number;
+    author: Author;
+    publishedAt: Date;
+    content: Content[];
+}
+
+interface PostProps {
+    post: PostType;
+}
+
+export function Post({ post }: PostProps) {
     // estado: variáveis que eu quero que o componente monitore
     const [comments, setComments] = useState(['Muito bom, parabéns!!']);
     const [newCommentText, setNewCommentText] = useState('');
 
-    function handleCreateNewComment(event: HTMLFormElement) {
+    function handleCreateNewComment(event: FormEvent | Event) {
         event.preventDefault();
   
         setComments([...comments, newCommentText]);
         setNewCommentText('');
     }
 
-    function handleNewCommentChange(event: HTMLFormElement) {
+    function handleNewCommentChange(event: ChangeEvent<HTMLTextAreaElement>) {
         event?.target.setCustomValidity('');
-        setNewCommentText(event?.target.value);
+        setNewCommentText(event.target.value);
     }
 
-    function handleNewCommentInvalid(event: HTMLFormElement) {
+    function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
         event?.target.setCustomValidity('Esse campo é obrigatório.');
     }
 
@@ -50,11 +59,11 @@ export function Post(props: PostProps) {
         setComments(commentsWithoutDeletedOne);
     }
 
-    const publishedDateFormatted = format(props.publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+    const publishedDateFormatted = format(post.publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
         locale: ptBR,
     });
 
-    const publishedDateRelativeToNow = formatDistanceToNow(props.publishedAt, {
+    const publishedDateRelativeToNow = formatDistanceToNow(post.publishedAt, {
         locale: ptBR,
         addSuffix: true,
     });
@@ -65,18 +74,18 @@ export function Post(props: PostProps) {
         <article className={styles.post}>
             <header>
                 <div className={styles.author}>
-                    <Avatar src={props.author.avatarUrl} alt={props.author.name} />
+                    <Avatar src={post.author.avatarUrl} alt={post.author.name} />
                     <div className={styles.authorInfo}>
-                        <strong>{props.author.name}</strong>
-                        <span>{props.author.role}</span>
+                        <strong>{post.author.name}</strong>
+                        <span>{post.author.role}</span>
                     </div>
                 </div>
 
-                <time title={publishedDateFormatted} dateTime={props.publishedAt.toISOString()}>Publicado {publishedDateRelativeToNow}</time>
+                <time title={publishedDateFormatted} dateTime={post.publishedAt.toISOString()}>Publicado {publishedDateRelativeToNow}</time>
             </header>
 
             <div className={styles.content}>
-                {props.content.map(line => {
+                {post.content.map(line => {
                     if (line.type == 'paragraph') {
                         return <p key={line.id}>{line.content}</p>
                     } else if (line.type == 'link') {
