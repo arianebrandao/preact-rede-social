@@ -5,7 +5,7 @@
 <br>
 
 <p align="center">
-  <img alt="Ignite Feed" src=".github/app.png" width="100%">
+  <img alt="Ignite Feed" src=".github/app.jpg" width="100%">
 </p>
 
 ## 🚀 Ignite Feed
